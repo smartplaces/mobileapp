@@ -1,4 +1,0 @@
-mobileapp
-=========
-
-SmartPlaces mobile app
