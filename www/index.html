@@ -10,6 +10,10 @@
     <link rel="stylesheet" href="css/framework7.min.css">
     <!-- Path to your custom app styles-->
     <link rel="stylesheet" href="css/my-app.css">
+    <!-- Scripts -->
+    <script src="cordova.js"></script>
+    <script src="js/jquery.js"></script>
+    <script src="app.js"></script>
   </head>
   <body>
     <!-- Status bar overlay for fullscreen mode-->
@@ -25,6 +29,7 @@
         <p><a href="view-1-2.html" class="close-panel">URL 1 - Youtube</a></p>
         <p><a href="view-1-3.html" class="close-panel">URL 2 - Site</a></p>
         <p><a href="ppt.html" class="external">PPT</a></p>
+        <p><a href="#" class="close-panel">Close</a></p>
       </div>
     </div>
     <!-- Views, and they are tabs-->
@@ -47,10 +52,10 @@
           <!-- Page, data-page contains page name-->
           <div data-page="index-1" class="page">
             <!-- Scrollable page content-->
-            <div class="page-content">
-              <div style="width: 100%; height: 50%; background-image: url('./img/bg1.jpg'); background-size: cover; background-position: center; background-repeat: no-repeat;"></div>
-              <div class="content-block-title">Мясной ресторан &laquo;Скотина&raquo;</div>
-              <div class="content-block">
+            <div class="page-content" id="message">
+              <div id="messageImage" style="width: 100%; height: 50%; background-image: url('./img/bg1.jpg'); background-size: cover; background-position: center; background-repeat: no-repeat;"></div>
+              <div id="messageHeader"class="content-block-title">Мясной ресторан &laquo;Скотина&raquo;</div>
+              <div id="messageText" class="content-block">
                 <p>Мясной ресторан «Скотина» открылся в городе Краснодаре 14 октября 2013 г. Мы специализируемся на приготовлении мясных блюд, в первую очередь – из местного кубанского мяса. Для хранения, вызревания и подготовки мяса в ресторане оборудована специальная холодильная камера площадью более 50 кв.м., организован полноценный мясной цех для его переработки, а все мясо готовится на специальных угольных печах.</p>
                 <p>Мясо, из которого мы готовим блюда, поступает нам в тушах! Для полного обеспечения потребностей ресторана, мы разводим своих быков мясных пород шароле, ангус и лимузин.</p>
                 <p>В своих рецептах, мы используем все части туши, поэтому считаем, что вкусное мясо – это не только стейки из премиальных частей. Рекомендуем вам попробовать все части. Мы против «мясного фашизма»!</p>
@@ -373,7 +378,8 @@
             <div class="page-content">
               <div class="content-block-title">Избранные умные места</div>
               <div class="list-block media-list">
-                <ul>
+                <ul id="found-beacons">
+                  <!--
                   <li>
                     <a href="#" class="item-link item-content">
                       <div class="item-inner">
@@ -398,6 +404,7 @@
                       </div>
                     </a>
                   </li>
+                -->
                 </ul>
               </div>
             </div>
