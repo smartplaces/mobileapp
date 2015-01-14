@@ -5,17 +5,7 @@ var app = (function(){
   // Specify your beacon UUIDs here.
   var regions =
   [
-    {uuid: 'E2C56DB5-DFFB-48D2-B060-D0F5A71096E0'},
-    {uuid: '8DEEFBB9-F738-4297-8040-96668BB44281'}
-  /*
-  // Estimote Beacon factory UUID.
-  {uuid:'B9407F30-F5F8-466E-AFF9-25556B57FE6D'},
-  // Sample UUIDs for beacons in our lab.
-  {uuid:'F7826DA6-4FA2-4E98-8024-BC5B71E0893E'},
-  {uuid:'8DEEFBB9-F738-4297-8040-96668BB44281'},
-  {uuid:'A0B13730-3A9A-11E3-AA6E-0800200C9A66'},
-  {uuid:'A4950001-C5B1-4B44-B512-1370F02D74DE'}
-  */
+    {uuid: 'E2C56DB5-DFFB-48D2-B060-D0F5A71096E0'}
   ];
 
   // Dictionary of beacons.
@@ -26,7 +16,7 @@ var app = (function(){
 
   app.initialize = function(){
     document.addEventListener('deviceready', onDeviceReady, false);
-    initScenarios();
+    //initScenarios();
   };
 
   function onDeviceReady(){
@@ -145,6 +135,35 @@ var app = (function(){
     if (scenarioString){
       var scenario = JSON.parse(scenarioString);
       if (!scenario.disabledUntil || (scenario.disabledUntil < timeNow)){
+
+        var proximity = beacon.proximity.toUpperCase().replace("PROXIMITY","");
+        $.ajax({
+          dataType: "jsonp",
+          url: "http://sleepy-scrubland-4869.herokuapp.com/mobile/message/"+beacon.uuid.toUpperCase()+"/"+beacon.major+"/"+beacon.minor+"/"+proximity
+        })
+        .done(function(data) {
+          if (console && console.log) {
+            console.log(JSON.stringify(data));
+          }
+          if (data){
+            data.ts = timeNow;
+            showMessage(data);
+            scenario.history = scenario.history || [];
+            scenario.history.push(data);
+          }
+          scenario.disabledUntil=timeNow + 60000;
+          localStorage[id]=JSON.stringify(scenario);
+        });
+      }
+    }
+
+    /*
+    var id = (beacon.uuid+':'+beacon.major+':'+beacon.minor).toUpperCase();
+    var timeNow = Date.now();
+    var scenarioString = localStorage[id];
+    if (scenarioString){
+      var scenario = JSON.parse(scenarioString);
+      if (!scenario.disabledUntil || (scenario.disabledUntil < timeNow)){
         var proximity = beacon.proximity.toUpperCase().replace("PROXIMITY","");
 
         if (proximityToNum(proximity)<=proximityToNum(scenario.proximity)){
@@ -154,6 +173,7 @@ var app = (function(){
         }
       }
     }
+    */
   }
 
   function proximityToNum(proximity){
@@ -166,14 +186,20 @@ var app = (function(){
   }
 
   function showMessage(m){
-    if (m.messageType=='10'){
+    if (m.messagetype=='10'){
       $('#message').html(
-        '<div style="width: 100%; height: 50%; background-image: url('+m.image+'); background-size: cover; background-position: center; background-repeat: no-repeat;"></div>'
+        '<div style="width: 100%; height: 50%; background-image: url('+m.image.url+'); background-size: cover; background-position: center; background-repeat: no-repeat;"></div>'
         + '<div class="content-block-title">'+m.header+'</div>'
-        + '<div class="content-block">'+m.text+'</div>'
+        + '<div class="content-block">'+m.text+'<br/>'+m.ts+'</div>'
       );
-    }else if (m.messageType=='20'){
+
+    }else if (m.messagetype=='20'){
       $('#message').html("<iframe width='100%'' height='100%' src='"+m.url+"' frameborder='0' allowfullscreen></iframe>");
+    }else{
+      console.log('Unknown message type in message: '+JSON.stringify(data));
+    }
+    if (m.coupon){
+      $('#couponLink').html('<a href="#" class="link" onclick="window.open(\''+m.coupon+'\', \'_system\');"><span>Скачать купон</span></a>');
     }
   }
 
