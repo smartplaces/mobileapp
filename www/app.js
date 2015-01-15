@@ -2,10 +2,12 @@ var app = (function(){
   // Application object.
   var app = {};
 
+  var UUID = 'E2C56DB5-DFFB-48D2-B060-D0F5A71096E0';
+
   // Specify your beacon UUIDs here.
   var regions =
   [
-    {uuid: 'E2C56DB5-DFFB-48D2-B060-D0F5A71096E0'}
+    {uuid: UUID}
   ];
 
   // Dictionary of beacons.
@@ -128,14 +130,15 @@ var app = (function(){
   }
 
   function processScenario(beacon){
-    var id = (beacon.uuid+':'+beacon.major+':'+beacon.minor).toUpperCase();
+    //console.log('------------- PROCESS BEACON -------------');
     var timeNow = Date.now();
-    var scenarioString = localStorage[id];
-    var scenario = scenarioString ? JSON.parse(scenarioString) : {};
-    if (!scenario.disabledUntil || (scenario.disabledUntil < timeNow)){
+    var place = (beacon.uuid+':'+beacon.major+':'+beacon.minor).toUpperCase();
+    var history = localStorage[place] ? JSON.parse(localStorage[place]) : {};
+    if (!history.disabledUntil || (history.disabledUntil < timeNow)){
         //console.log('------------- PROCESS SCENARIO -------------');
-        scenario.disabledUntil=timeNow + 60000;
-        localStorage[id]=JSON.stringify(scenario);
+        history.disabledUntil=timeNow + 60000;
+        localStorage[place]=JSON.stringify(history);
+
         var proximity = beacon.proximity.toUpperCase().replace("PROXIMITY","");
         $.ajax({
           dataType: "jsonp",
@@ -149,13 +152,18 @@ var app = (function(){
           if (data){
             data.ts = timeNow;
             showMessage(data);
-            scenario.history = scenario.history || [];
-            scenario.history.push(data);
-            scenario.disabledUntil=timeNow + (parseInt(data.frequency)*1000);
-            localStorage[id]=JSON.stringify(scenario);
+            //Add event to history
+            history.events = history.events || [];
+            history.events.push(data);
+            history.disabledUntil=timeNow + (parseInt(data.frequency)*1000);
+            localStorage[place]=JSON.stringify(history);
+            //Increase event counter for place
+            var places = localStorage[UUID] ? JSON.parse(localStorage[UUID]) : {};
+            var count = places[place] || 1;
+            places[place] = count + 1;
+            localStorage[UUID]=JSON.stringify(places);
           }
         });
-
     }
 
   }
@@ -172,7 +180,7 @@ var app = (function(){
     }else if (m.messagetype=='20'){
       $('#message').html("<iframe width='100%'' height='100%' src='"+m.url+"' frameborder='0' allowfullscreen></iframe>");
     }else{
-      console.log('Unknown message type in message: '+JSON.stringify(data));
+      console.log('Unknown message type in message: '+JSON.stringify(m));
     }
     if (m.coupon){
       $('#couponLink').html('<a href="#" class="link" onclick="window.open(\''+m.coupon+'\', \'_system\');"><span>Скачать купон</span></a>');
