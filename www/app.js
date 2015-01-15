@@ -16,7 +16,6 @@ var app = (function(){
 
   app.initialize = function(){
     document.addEventListener('deviceready', onDeviceReady, false);
-    //initScenarios();
   };
 
   function onDeviceReady(){
@@ -132,16 +131,18 @@ var app = (function(){
     var id = (beacon.uuid+':'+beacon.major+':'+beacon.minor).toUpperCase();
     var timeNow = Date.now();
     var scenarioString = localStorage[id];
-    if (scenarioString){
-      var scenario = JSON.parse(scenarioString);
-      if (!scenario.disabledUntil || (scenario.disabledUntil < timeNow)){
-
+    var scenario = scenarioString ? JSON.parse(scenarioString) : {};
+    if (!scenario.disabledUntil || (scenario.disabledUntil < timeNow)){
+        //console.log('------------- PROCESS SCENARIO -------------');
+        scenario.disabledUntil=timeNow + 60000;
+        localStorage[id]=JSON.stringify(scenario);
         var proximity = beacon.proximity.toUpperCase().replace("PROXIMITY","");
         $.ajax({
           dataType: "jsonp",
           url: "http://sleepy-scrubland-4869.herokuapp.com/mobile/message/"+beacon.uuid.toUpperCase()+"/"+beacon.major+"/"+beacon.minor+"/"+proximity
         })
         .done(function(data) {
+          //console.log('------------- RECEIVE DATA -------------');
           if (console && console.log) {
             console.log(JSON.stringify(data));
           }
@@ -150,42 +151,17 @@ var app = (function(){
             showMessage(data);
             scenario.history = scenario.history || [];
             scenario.history.push(data);
+            scenario.disabledUntil=timeNow + (parseInt(data.frequency)*1000);
+            localStorage[id]=JSON.stringify(scenario);
           }
-          scenario.disabledUntil=timeNow + 60000;
-          localStorage[id]=JSON.stringify(scenario);
         });
-      }
+
     }
 
-    /*
-    var id = (beacon.uuid+':'+beacon.major+':'+beacon.minor).toUpperCase();
-    var timeNow = Date.now();
-    var scenarioString = localStorage[id];
-    if (scenarioString){
-      var scenario = JSON.parse(scenarioString);
-      if (!scenario.disabledUntil || (scenario.disabledUntil < timeNow)){
-        var proximity = beacon.proximity.toUpperCase().replace("PROXIMITY","");
-
-        if (proximityToNum(proximity)<=proximityToNum(scenario.proximity)){
-          scenario.disabledUntil=timeNow + 60000;
-          localStorage[id]=JSON.stringify(scenario);
-          showMessage(scenario.message);
-        }
-      }
-    }
-    */
-  }
-
-  function proximityToNum(proximity){
-    switch (proximity.toUpperCase()){
-      case 'FAR': return 2;
-      case 'NEAR': return 1;
-      case 'IMMEDIATE': return 0;
-      default: return -1;
-    }
   }
 
   function showMessage(m){
+    //console.log('------------- SHOW MESSAGE -------------');
     if (m.messagetype=='10'){
       $('#message').html(
         '<div style="width: 100%; height: 50%; background-image: url('+m.image.url+'); background-size: cover; background-position: center; background-repeat: no-repeat;"></div>'
@@ -201,26 +177,6 @@ var app = (function(){
     if (m.coupon){
       $('#couponLink').html('<a href="#" class="link" onclick="window.open(\''+m.coupon+'\', \'_system\');"><span>Скачать купон</span></a>');
     }
-  }
-
-  function initScenarios(){
-    localStorage['E2C56DB5-DFFB-48D2-B060-D0F5A71096E0:1:1'] = JSON.stringify({
-      proximity: 'FAR',
-      message: {
-        messageType: "10",
-        header: "Бар &laquo;Mr. Drunke Bar&raquo;",
-        text: "<p>Великий бар — это тот бар, величие и популярность которого держится на атмосфере, создаваемой барменами.</p>",
-        image: './img/bg2.jpg'
-      }
-    });
-
-    localStorage['8DEEFBB9-F738-4297-8040-96668BB44281:1:2967'] = JSON.stringify({
-      proximity: 'IMMEDIATE',
-      message: {
-        messageType: "20",
-        url: 'http://www.youtube.com/embed/q6BHHGvhZ0Y'
-      }
-    });
   }
 
   return app;
