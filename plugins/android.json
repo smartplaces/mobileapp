@@ -9,11 +9,11 @@
                 "parents": {
                     "/*": [
                         {
-                            "xml": "<feature name=\"LocationManager\"><param name=\"android-package\" value=\"com.unarin.cordova.beacon.LocationManager\" /></feature>",
+                            "xml": "<feature name=\"InAppBrowser\"><param name=\"android-package\" value=\"org.apache.cordova.inappbrowser.InAppBrowser\" /></feature>",
                             "count": 1
                         },
                         {
-                            "xml": "<feature name=\"InAppBrowser\"><param name=\"android-package\" value=\"org.apache.cordova.inappbrowser.InAppBrowser\" /></feature>",
+                            "xml": "<feature name=\"LocationManager\"><param name=\"android-package\" value=\"com.unarin.cordova.beacon.LocationManager\" /></feature>",
                             "count": 1
                         }
                     ]
@@ -46,10 +46,10 @@
         }
     },
     "installed_plugins": {
-        "com.unarin.cordova.beacon": {
+        "org.apache.cordova.inappbrowser": {
             "PACKAGE_NAME": "ru.smartplaces.mobileapp"
         },
-        "org.apache.cordova.inappbrowser": {
+        "com.unarin.cordova.beacon": {
             "PACKAGE_NAME": "ru.smartplaces.mobileapp"
         }
     },

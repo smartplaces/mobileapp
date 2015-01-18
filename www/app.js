@@ -4,6 +4,8 @@ var app = (function(){
 
   var UUID = 'E2C56DB5-DFFB-48D2-B060-D0F5A71096E0';
 
+  var historyStorage = 'historyStorage';
+
   // Specify your beacon UUIDs here.
   var regions =
   [
@@ -26,6 +28,9 @@ var app = (function(){
 
     // Start tracking beacons!
     startScan();
+
+    // Show saved message history
+    showMessageList();
 
     // Display refresh timer.
     updateTimer = setInterval(displayBeaconList, 500);
@@ -136,7 +141,7 @@ var app = (function(){
     var history = localStorage[place] ? JSON.parse(localStorage[place]) : {};
     if (!history.disabledUntil || (history.disabledUntil < timeNow)){
         //console.log('------------- PROCESS SCENARIO -------------');
-        history.disabledUntil=timeNow + 60000;
+        history.disabledUntil=timeNow + 10000;
         localStorage[place]=JSON.stringify(history);
 
         var proximity = beacon.proximity.toUpperCase().replace("PROXIMITY","");
@@ -151,7 +156,7 @@ var app = (function(){
           }
           if (data){
             data.ts = timeNow;
-            showMessage(data);
+            // showMessage(data); // temporary disabled
             //Add event to history
             history.events = history.events || [];
             history.events.push(data);
@@ -162,20 +167,58 @@ var app = (function(){
             var count = places[place] || 1;
             places[place] = count + 1;
             localStorage[UUID]=JSON.stringify(places);
+            // new
+            var messageHistory = localStorage[historyStorage] ? JSON.parse(localStorage[historyStorage]) : [];
+            var curMessageIndex = -1;
+            messageHistory.every(function (element, index, array) {
+              if (element._id == data._id) {
+                curMessageIndex = index;
+                return false;
+              } else {
+                return true;
+              };
+            });
+            if (curMessageIndex < 0) {
+              messageHistory.push(data);
+            } else {
+              messageHistory[curMessageIndex] = data;
+            };
+            messageHistory = _.sortBy(messageHistory, function(element) { return -element.ts; });
+            localStorage[historyStorage] = JSON.stringify(messageHistory);
+            showMessageList();
           }
         });
     }
 
   }
 
+  function showMessageList() {
+    var messageHistory = localStorage[historyStorage] ? JSON.parse(localStorage[historyStorage]) : [];
+    var messageHTML = '';
+    var messageTemplate = _.template($('#messageTemplate').html());
+    _.each(messageHistory, function (element, index, list) {
+      if (element.messagetype == '10') {
+        messageHTML += messageTemplate(element);
+      };
+    });
+    if (messageHTML != '')
+      $('#message').html(messageHTML);
+  }
+
   function showMessage(m){
+    // Compiled message template
+    var messageTemplate = _.template($('#messageTemplate').html());
+
     //console.log('------------- SHOW MESSAGE -------------');
     if (m.messagetype=='10'){
+      /*
       $('#message').html(
         '<div style="width: 100%; height: 50%; background-image: url('+m.image.url+'); background-size: cover; background-position: center; background-repeat: no-repeat;"></div>'
         + '<div class="content-block-title">'+m.header+'</div>'
         + '<div class="content-block">'+m.text+'<br/>'+m.ts+'</div>'
       );
+      */
+      $('#message').html(messageTemplate(m));
 
     }else if (m.messagetype=='20'){
       $('#message').html("<iframe width='100%'' height='100%' src='"+m.url+"' frameborder='0' allowfullscreen></iframe>");
