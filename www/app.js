@@ -4,6 +4,8 @@ var app = (function(){
 
   var UUID = 'E2C56DB5-DFFB-48D2-B060-D0F5A71096E0';
 
+  var FOREGROUND = true;
+
   var historyStorage = 'historyStorage';
 
   // Specify your beacon UUIDs here.
@@ -20,21 +22,33 @@ var app = (function(){
 
   app.initialize = function(){
     document.addEventListener('deviceready', onDeviceReady, false);
+    document.addEventListener('pause',function(){ FOREGROUND=false; },false);
+    document.addEventListener('resume',function(){ FOREGROUND=true;},false);
   };
 
   function onDeviceReady(){
+
     // Specify a shortcut for the location manager holding the iBeacon functions.
     window.locationManager = cordova.plugins.locationManager;
 
-    // Start tracking beacons!
-    startScan();
+    window.plugin.notification.local.onclick = function (id, state, json) {
+      //TODO: Roll the message list to current message with id
+    };
 
-    // Show saved message history
-    showMessageList();
+    if (window.locationManager.isRangingAvailable()){
+      // Start tracking beacons!
+      startScan();
 
-    // Display refresh timer.
-    updateTimer = setInterval(displayBeaconList, 500);
-  }
+      // Show saved message history
+      showMessageList();
+
+      // Display refresh timer.
+      updateTimer = setInterval(displayBeaconList, 500);
+    }else{
+      alert('Упс! Ваше устройство не поддерживается :(');
+    }
+
+  };
 
   function startScan(){
     // The delegate object holds the iBeacon callback functions
@@ -186,6 +200,7 @@ var app = (function(){
             messageHistory = _.sortBy(messageHistory, function(element) { return -element.ts; });
             localStorage[historyStorage] = JSON.stringify(messageHistory);
             showMessageList();
+            showLocalNotification(data);
           }
         });
     }
@@ -229,6 +244,20 @@ var app = (function(){
       $('#couponLink').html('<a href="#" class="link" onclick="window.open(\''+m.coupon+'\', \'_system\');"><span>Скачать купон</span></a>');
     }
   }
+
+  function showLocalNotification (message) {
+    if (!FOREGROUND){
+      window.plugin.notification.local.add({
+        id: message._id,
+        title:   message.header,
+        message: message.text,
+        json: message,
+        autoCancel: true
+      });
+    }else{
+      //TODO: Do somethig else when app in foreground
+    }
+  };
 
   return app;
 })();
