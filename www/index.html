@@ -41,7 +41,7 @@
       <div id="view-1" class="view view-main tab active">
 
         <!-- Top Navbar-->
-        <div class="navbar">
+        <div id="view-1-navbar" class="navbar">
           <div class="navbar-inner">
             <div class="left"><a href="#" data-panel="left" class="open-panel link"><i class="icon icon-bars"></i></a></div>
             <div class="right" id="couponLink"></div>
@@ -264,7 +264,7 @@
       <!-- Bottom Tabbar-->
       <div class="toolbar tabbar tabbar-labels">
         <div class="toolbar-inner">
-          <a href="#view-1" class="tab-link active"><i class="icon tabbar-location-icon"></i><span class="tabbar-label">Место</span></a>
+          <a href="#view-1" class="tab-link active"><i class="icon tabbar-location-icon"><span id="view-1-badge" class="badge bg-red" style="display: none;"></span></i><span class="tabbar-label">Место</span></a>
           <a href="#view-2" class="tab-link"><i class="icon tabbar-map-icon"></i><span class="tabbar-label">Карта</span></a>
           <a href="#view-3" class="tab-link"><i class="icon tabbar-favourite-icon"></i><span class="tabbar-label">Избранное</span></a>
           <a href="#view-4" class="tab-link"><i class="icon tabbar-history-icon"><span class="badge bg-red">4</span></i><span class="tabbar-label">История</span></a>
@@ -309,7 +309,7 @@
       };
     </script>
     <script id="messageTemplate" type="text/x-underscore-template">
-      <div class="content-block-title"><%= moment(ts).fromNow() %></div>
+      <div class="content-block-title" data-message-id="<%= _id %>"><%= moment(ts).fromNow() %></div>
       <div class="message-image" style="background-image: url('<%= image.url %>');"></div>
       <div class="content-block">
         <div class="content-block-inner">

@@ -1,22 +1,17 @@
 ## ChangeLog
-#### Version 0.8.0 (not yet released)
+#### Version 0.7.8 (11.01.2015)
+- [bugfix:] NSInvalidArgumentException caused on iOS.
+
+#### Version 0.7.6 (03.10.2014)
+- [bugfix:] `hasPermission` and `promptForPermission` let the app crash on iOS7 and older.
+- [bugfix:] Convert the id value to a String before comparison.
+- [bugfix:] Prevent possible crash when calling `cancelAll`.
+- [enhancement:] Do not inherit any notification defaults.
+
+#### Version 0.7.5 (29.09.2014)
+- [enhancement:] __iOS8 Support__
 - [feature:] New method `hasPermission` to ask if the user has granted to display local notifications.
-- [feature:] New method `registerPermission` to register permission to display local notifications.
-- [feature:] New Android specific `led:` flag.
-- [feature:] Add `isTriggered` & `getTriggeredIds` methods.
-- [enhancement:] iOS8 support.
-- [enhancement:] Android 2.x (SDK >= 7) support (Thanks to **khizarsonu**)
-- [enhancement:] Scope parameter for `isScheduled` and `getScheduledIds`
-- [enhancement:] Callbacks for `add`, `cancel` & `cancelAll`
-- [enhancement:] `image:` accepts remote URLs and local URIs (Android)
-- [enhancement:] Schedule multiple notifications at once
-- [enhancement:] Cancel multiple notifications at once
-- [enhancement:] Clear multiple notifications at once (Android)
-- [enhancement:] `clear` & `clearAll` methods (Android)
-- [enhancement:] `onclear` event (Android)
-- [enhancement:] Modal dialogs when in foreground (Android)
-- [enhancement:] Ability to change repeating notifications (Android)
-- [enhancement:] `sound:` accepts local URIs for absolute (file:///), relative (file://) and resource path (res:). (Android)
+- [feature:] New method `promptForPermission` to promt the user to grant permission to display local notifications.
 
 #### Version 0.7.4 (22.03.2014)
 - [bugfix:] Platform specific properties were ignored.

@@ -24,42 +24,21 @@
 
 @interface APPLocalNotification : CDVPlugin
 
-// Execute all queued events
+// Executes all queued events
 - (void) deviceready:(CDVInvokedUrlCommand*)command;
-
-// Inform if the app has the permission to show notifications
-- (void) hasPermission:(CDVInvokedUrlCommand*)command;
-// Register permission to show notifications
-- (void) registerPermission:(CDVInvokedUrlCommand*)command;
-
-// Schedule a new notification
+// Schedules a new local notification
 - (void) add:(CDVInvokedUrlCommand*)command;
-// Update a notification
-- (void) update:(CDVInvokedUrlCommand*)command;
-// Cancel a given notification
+// Cancels a given local notification
 - (void) cancel:(CDVInvokedUrlCommand*)command;
-// Cancel all currently scheduled notifications
+// Cancels all currently scheduled notifications
 - (void) cancelAll:(CDVInvokedUrlCommand*)command;
-
-// If a notification with an ID exists
-- (void) exist:(CDVInvokedUrlCommand*)command;
-// If a notification with an ID was scheduled
+// Checks wether a notification with an ID is scheduled
 - (void) isScheduled:(CDVInvokedUrlCommand*)command;
-// If a notification with an ID was triggered
-- (void) isTriggered:(CDVInvokedUrlCommand*)command;
-
-// List all ids from all local notifications
-- (void) getAllIds:(CDVInvokedUrlCommand*)command;
-// List all ids from all pending notifications
+// Retrieves a list of ids from all currently pending notifications
 - (void) getScheduledIds:(CDVInvokedUrlCommand*)command;
-// List all ids from all triggered notifications
-- (void) getTriggeredIds:(CDVInvokedUrlCommand*)command;
-
-// Property list for given local notifications
-- (void) getAll:(CDVInvokedUrlCommand*)command;
-// Property list for given scheduled notifications
-- (void) getScheduled:(CDVInvokedUrlCommand*)command;
-// Property list for given triggered notifications
-- (void) getTriggered:(CDVInvokedUrlCommand*)command;
+// Informs if the app has the permission to show notifications
+- (void) hasPermission:(CDVInvokedUrlCommand *)command;
+// Ask for permission to show notifications
+- (void) promptForPermission:(CDVInvokedUrlCommand *)command;
 
 @end

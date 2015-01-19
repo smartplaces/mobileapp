@@ -7,6 +7,7 @@ var app = (function(){
   var FOREGROUND = true;
 
   var historyStorage = 'historyStorage';
+  var unreadHistoryStorage = 'unreadHistoryStorage';
 
   // Specify your beacon UUIDs here.
   var regions =
@@ -33,6 +34,8 @@ var app = (function(){
 
     window.plugin.notification.local.onclick = function (id, state, json) {
       //TODO: Roll the message list to current message with id
+      myApp.showTab('#view-1');
+      scrollToMessage(id);
     };
 
     if (window.locationManager.isRangingAvailable()){
@@ -41,6 +44,16 @@ var app = (function(){
 
       // Show saved message history
       showMessageList();
+
+      // And clear unread message history at start
+      localStorage.removeItem(unreadHistoryStorage);
+
+      $('#view-1').on('show', function () {
+          if (localStorage[unreadHistoryStorage])
+            $('#message').scrollTop(0);
+          localStorage.removeItem(unreadHistoryStorage);
+          showUnreadMessageCount();
+      });
 
       // Display refresh timer.
       updateTimer = setInterval(displayBeaconList, 500);
@@ -182,30 +195,49 @@ var app = (function(){
             places[place] = count + 1;
             localStorage[UUID]=JSON.stringify(places);
             // new
-            var messageHistory = localStorage[historyStorage] ? JSON.parse(localStorage[historyStorage]) : [];
-            var curMessageIndex = -1;
-            messageHistory.every(function (element, index, array) {
-              if (element._id == data._id) {
-                curMessageIndex = index;
-                return false;
-              } else {
-                return true;
-              };
-            });
-            if (curMessageIndex < 0) {
-              messageHistory.push(data);
-            } else {
-              messageHistory[curMessageIndex] = data;
-            };
-            messageHistory = _.sortBy(messageHistory, function(element) { return -element.ts; });
-            localStorage[historyStorage] = JSON.stringify(messageHistory);
+            addMessageToHistory(data, historyStorage);
             showMessageList();
             showLocalNotification(data);
+            // unread messages support
+            if (! $('#view-1').hasClass('active') && FOREGROUND) {
+              // Приложение активно, но раздел "Место" сейчас не активен
+              addMessageToHistory(data, unreadHistoryStorage);
+              showUnreadMessageCount();
+            }
           }
         });
     }
 
   }
+
+  function addMessageToHistory(message, storage) {
+    var messageHistory = localStorage[storage] ? JSON.parse(localStorage[storage]) : [];
+    var curMessageIndex = -1;
+    messageHistory.every(function (element, index, array) {
+      if (element._id == message._id) {
+        curMessageIndex = index;
+        return false;
+      } else {
+        return true;
+      };
+    });
+    if (curMessageIndex < 0) {
+      messageHistory.push(message);
+    } else {
+      messageHistory[curMessageIndex] = message;
+    };
+    messageHistory = _.sortBy(messageHistory, function(element) { return -element.ts; });
+    localStorage[storage] = JSON.stringify(messageHistory);
+  };
+
+  function showUnreadMessageCount() {
+    var messageHistory = localStorage[unreadHistoryStorage] ? JSON.parse(localStorage[unreadHistoryStorage]) : [];
+    if (! _.isEmpty(messageHistory)) {
+      $('#view-1-badge').html(messageHistory.length).show();
+    } else {
+      $('#view-1-badge').empty().hide();
+    };
+  };
 
   function showMessageList() {
     var messageHistory = localStorage[historyStorage] ? JSON.parse(localStorage[historyStorage]) : [];
@@ -257,6 +289,13 @@ var app = (function(){
     }else{
       //TODO: Do somethig else when app in foreground
     }
+  };
+
+  function scrollToMessage(messageId) {
+    var messagePosition = $('#message div[data-message-id="' + messageId + '"]').position();
+    if (! _.isEmpty(messagePosition)) {
+      $('#message').scrollTop(messagePosition.top - $('#view-1-navbar').height());
+    };
   };
 
   return app;
