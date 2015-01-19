@@ -4,6 +4,8 @@ var app = (function(){
 
   var UUID = 'E2C56DB5-DFFB-48D2-B060-D0F5A71096E0';
 
+  var FOREGROUND = true;
+
   var historyStorage = 'historyStorage';
 
   // Specify your beacon UUIDs here.
@@ -20,9 +22,12 @@ var app = (function(){
 
   app.initialize = function(){
     document.addEventListener('deviceready', onDeviceReady, false);
+    document.addEventListener('pause',function(){ FOREGROUND=false; },false);
+    document.addEventListener('resume',function(){ FOREGROUND=true;},false);
   };
 
   function onDeviceReady(){
+
     // Specify a shortcut for the location manager holding the iBeacon functions.
     window.locationManager = cordova.plugins.locationManager;
 
@@ -241,13 +246,17 @@ var app = (function(){
   }
 
   function showLocalNotification (message) {
-    window.plugin.notification.local.add({
-      id: message._id,
-      title:   message.header,
-      message: message.text,
-      json: message,
-      autoCancel: true
-    });
+    if (!FOREGROUND){
+      window.plugin.notification.local.add({
+        id: message._id,
+        title:   message.header,
+        message: message.text,
+        json: message,
+        autoCancel: true
+      });
+    }else{
+      //TODO: Do somethig else when app in foreground
+    }
   };
 
   return app;
