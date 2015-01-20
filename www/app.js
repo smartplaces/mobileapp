@@ -2,6 +2,8 @@ var app = (function(){
   // Application object.
   var app = {};
 
+  var MSG_ID_COUNTER = 1;
+
   var UUID = 'E2C56DB5-DFFB-48D2-B060-D0F5A71096E0';
 
   var FOREGROUND = true;
@@ -41,9 +43,9 @@ var app = (function(){
     window.locationManager = cordova.plugins.locationManager;
 
     window.plugin.notification.local.onclick = function (id, state, json) {
-      //TODO: Roll the message list to current message with id
+      console.log('window.plugin.notification.local.onclick '+id+', '+json);
       myApp.showTab('#view-1');
-      scrollToMessage(id);
+      scrollToMessage(json);
     };
 
     bluetoothle.initialize(
@@ -307,11 +309,12 @@ var app = (function(){
 
   function showLocalNotification (message) {
     if (!FOREGROUND){
+      MSG_ID_COUNTER+=1;
       window.plugin.notification.local.add({
-        id: message._id,
+        id: MSG_ID_COUNTER,
         title:   message.header,
         message: message.text,
-        json: message,
+        json: message._id,
         autoCancel: true
       });
     }else{
