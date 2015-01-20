@@ -2427,19 +2427,11 @@ NSString *const operationWrite = @"write";
         return nil;
     }
     
-    if (args.count != 1)
+    if (args.count == 1)
     {
-        return nil;
+        return (NSDictionary *)[args objectAtIndex:0];
     }
-    
-    NSObject* arg = [args objectAtIndex:0];
-    
-    if (![arg isKindOfClass:[NSDictionary class]])
-    {
-        return nil;
-    }
-    
-    return (NSDictionary *)[args objectAtIndex:0];
+    return nil;
 }
 
 -(NSData*) getValue:(NSDictionary *) obj

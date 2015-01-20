@@ -94,36 +94,36 @@ By default, background mode is enabled. If you wish to remove this, follow the s
 
 ## Methods ##
 
-* [bluetoothle.initialize] (#initialize)
-* [bluetoothle.enable] (#enable) (Android)
-* [bluetoothle.disable] (#disable) (Android)
-* [bluetoothle.startScan] (#startscan)
-* [bluetoothle.stopScan] (#stopscan)
-* [bluetoothle.retrieveConnected] (#retrieveconnected) (iOS)
-* [bluetoothle.connect] (#connect)
-* [bluetoothle.reconnect] (#reconnect)
-* [bluetoothle.disconnect] (#disconnect)
-* [bluetoothle.close] (#close)
-* [bluetoothle.discover] (#discover) (Android)
-* [bluetoothle.services] (#services) (iOS)
-* [bluetoothle.characteristics] (#characteristics) (iOS)
-* [bluetoothle.descriptors] (#descriptors)  (iOS)
-* [bluetoothle.read] (#read)
-* [bluetoothle.subscribe] (#subscribe)
-* [bluetoothle.unsubscribe] (#unsubscribe)
-* [bluetoothle.write] (#write)
-* [bluetoothle.readDescriptor] (#readdescriptor)
-* [bluetoothle.writeDescriptor] (#writedescriptor)
-* [bluetoothle.rssi] (#rssi)
-* [bluetoothle.isInitialized] (#isinitialized)
-* [bluetoothle.isEnabled] (#isenabled)
-* [bluetoothle.isScanning] (#isscanning)
-* [bluetoothle.isConnected] (#isconnected)
-* [bluetoothle.isDiscovered] (#isdiscovered)  (Android)
-* [bluetoothle.encodedStringToBytes] (#encodedstringtobytes)
-* [bluetoothle.bytesToEncodedString] (#bytestoencodedstring)
-* [bluetoothle.stringToBytes] (#stringtobytes)
-* [bluetoothle.bytesToString] (#bytestostring)
+* bluetoothle.initialize
+* bluetoothle.enable (Android)
+* bluetoothle.disable (Android)
+* bluetoothle.startScan
+* bluetoothle.stopScan
+* bluetoothle.retrieveConnected (iOS)
+* bluetoothle.connect
+* bluetoothle.reconnect
+* bluetoothle.disconnect
+* bluetoothle.close
+* bluetoothle.discover (Android)
+* bluetoothle.services (iOS)
+* bluetoothle.characteristics (iOS)
+* bluetoothle.descriptors (iOS)
+* bluetoothle.read
+* bluetoothle.subscribe
+* bluetoothle.unsubscribe
+* bluetoothle.write
+* bluetoothle.readDescriptor
+* bluetoothle.writeDescriptor
+* bluetoothle.rssi
+* bluetoothle.isInitialized
+* bluetoothle.isEnabled
+* bluetoothle.isScanning
+* bluetoothle.isConnected
+* bluetoothle.isDiscovered (Android)
+* bluetoothle.encodedStringToBytes
+* bluetoothle.bytesToEncodedString
+* bluetoothle.stringToBytes
+* bluetoothle.bytesToString
 
 
 ## Errors ##
@@ -464,7 +464,7 @@ bluetoothle.disconnect(disconnectSuccess, disconnectError);
 Close/dispose a Bluetooth LE device. Must disconnect before closing.
 
 ```javascript
-bluetoothle.close(closeSuccess, closeError, params);
+bluetoothle.close(closeSuccess, closeError);
 ```
 
 ##### Params #####
@@ -1091,7 +1091,7 @@ Value is a base64 encoded string of written bytes. Use bluetoothle.encodedString
 Read RSSI of a connected device. RSSI is also returned with scanning.
 
 ```javascript
-bluetoothle.rssi(rssiSuccess, rssiError, params);
+bluetoothle.rssi(rssiSuccess, rssiError);
 ```
 
 #### Params ####
@@ -1268,76 +1268,8 @@ bluetoothle.bytesToString(bytes);
 1. Create an out of the box Cordova application
 2. Copy and paste the /www folder in /example to your Cordova application
 3. Install the plugin using the steps above
-4. Install the console plugin using: cordova plugin add org.apache.cordova.console
-5. Modify write and writeDescriptor functions with actual values.
+4. Modify write and writeDescriptor functions with actual values.
 
-## Data Parsing Example ##
-```javascript
-if (obj.status == "subscribedResult")
-{
-  //Turn the base64 string into an array of unsigned 8bit integers
-  var bytes = bluetoothle.encodedStringToBytes(obj.value);
-  if (bytes.length === 0)
-  { 
-    return;
-  }
-  
-  //NOTE: Follow along to understand how the parsing works
-  //https://developer.bluetooth.org/gatt/characteristics/Pages/CharacteristicViewer.aspx?u=org.bluetooth.characteristic.heart_rate_measurement.xml
-
-  //First byte provides instructions on what to do with the remaining bytes
-  var flag = bytes[0];
-
-  //Offset from beginning of the array
-  var offset = 1;
-
-  //If the first bit of the flag is set, the HR is in 16 bit form
-  if ((flag & 0x01) == 1)
-  {
-      //Extract second and third bytes and convert to 16bit unsigned integer
-      var u16bytesHr = bytes.buffer.slice(offset, offset + 2);
-      var u16Hr = new Uint16Array(u16bytesHr)[0];
-      //16 bits takes up 2 bytes, so increase offset by two
-      offset += 2;
-  }
-  //Else the HR is in 8 bit form
-  else
-  {
-      //Extract second byte and convert to 8bit unsigned integer
-      var u8bytesHr = bytes.buffer.slice(offset, offset + 1);
-      var u8Hr = new Uint8Array(u8bytesHr)[0];
-  
-      //Or I believe I could just do this: var u8Hr = u8bytesHr[offset]
-  
-      //8 bits takes up 1 byte, so increase offset by one
-      offset += 1;
-  }
-
-  //NOTE: I'm ignoring the second and third bit because I'm not interested in the sensor contact, and it doesn't affect the offset
-
-  //If the fourth bit is set, increase the offset to skip over the energy expended information
-  if ((flag & 0x08) == 8)
-  {
-      offset += 2;
-  }
-
-  //If the fifth bit is set, get the RR interval(s)
-  if ((flag & 0x10) == 16)
-  {
-      //Number of rr intervals
-      var rrCount = (bytes.length - offset) / 2;
-  
-      for (var i = rrCount - 1; i >= 0; i--)
-      {
-          //Cast to 16 bit unsigned int
-          var u16bytesRr = bytes.buffer.slice(offset, offset + 2);
-          var u16Rr = new Uint16Array(u16bytesRr)[0];
-          //Increase offset
-          offset += 2;
-      }
-  }
-}
-```
 
 
 ## More information ##

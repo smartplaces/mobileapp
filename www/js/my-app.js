@@ -12,6 +12,6 @@ var view2 = myApp.addView('#view-2');
 var view3 = myApp.addView('#view-3');
 var view4 = myApp.addView('#view-4');
 
-var historySlider = myApp.slider('.places-history', {pagination: '.slider-pagination', onSlideChangeEnd: function(slider) {myApp.showTab('#place' + slider.activeSlideIndex);}})
+var historySlider = myApp.slider('#history-slider-container', {pagination: '.slider-pagination', onSlideChangeEnd: function(slider) {myApp.showTab('#place' + slider.activeSlideIndex + 1);}})
 
 moment.locale('ru');

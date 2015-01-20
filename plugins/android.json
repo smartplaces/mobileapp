@@ -13,7 +13,7 @@
                             "count": 1
                         },
                         {
-                            "xml": "<feature name=\"LocationManager\"><param name=\"android-package\" value=\"com.unarin.cordova.beacon.LocationManager\" /></feature>",
+                            "xml": "<feature name=\"Notification\"><param name=\"android-package\" value=\"org.apache.cordova.dialogs.Notification\" /></feature>",
                             "count": 1
                         },
                         {
@@ -25,11 +25,11 @@
                             "count": 1
                         },
                         {
-                            "xml": "<feature name=\"BluetoothLePlugin\"><param name=\"android-package\" value=\"com.randdusing.bluetoothle.BluetoothLePlugin\" /></feature>",
+                            "xml": "<feature name=\"LocationManager\"><param name=\"android-package\" value=\"com.unarin.cordova.beacon.LocationManager\" /></feature>",
                             "count": 1
                         },
                         {
-                            "xml": "<feature name=\"Notification\"><param name=\"android-package\" value=\"org.apache.cordova.dialogs.Notification\" /></feature>",
+                            "xml": "<feature name=\"BluetoothLePlugin\"><param name=\"android-package\" value=\"com.randdusing.bluetoothle.BluetoothLePlugin\" /></feature>",
                             "count": 1
                         }
                     ]
@@ -39,27 +39,19 @@
                 "parents": {
                     "/manifest": [
                         {
+                            "xml": "<uses-permission android:name=\"android.permission.RECEIVE_BOOT_COMPLETED\" />",
+                            "count": 1
+                        },
+                        {
                             "xml": "<uses-permission android:name=\"android.permission.BLUETOOTH\" />",
                             "count": 2
                         },
                         {
                             "xml": "<uses-permission android:name=\"android.permission.BLUETOOTH_ADMIN\" />",
                             "count": 2
-                        },
-                        {
-                            "xml": "<uses-permission android:name=\"android.permission.RECEIVE_BOOT_COMPLETED\" />",
-                            "count": 1
                         }
                     ],
                     "/manifest/application": [
-                        {
-                            "xml": "<service android:enabled=\"true\" android:exported=\"true\" android:isolatedProcess=\"false\" android:label=\"iBeacon\" android:name=\"com.radiusnetworks.ibeacon.service.IBeaconService\"></service>",
-                            "count": 1
-                        },
-                        {
-                            "xml": "<service android:enabled=\"true\" android:name=\"com.radiusnetworks.ibeacon.IBeaconIntentProcessor\"><meta-data android:name=\"background\" android:value=\"true\" /><intent-filter android:priority=\"1\"><action android:name=\"com.unarin.cordova.beacon.IBeaconPlugin.DID_RANGING\" /><action android:name=\"com.unarin.cordova.beacon.IBeaconPlugin.DID_MONITORING\" /></intent-filter></service>",
-                            "count": 1
-                        },
                         {
                             "xml": "<receiver android:name=\"de.appplant.cordova.plugin.localnotification.Receiver\" />",
                             "count": 1
@@ -71,6 +63,14 @@
                         {
                             "xml": "<activity android:launchMode=\"singleInstance\" android:name=\"de.appplant.cordova.plugin.localnotification.ReceiverActivity\" />",
                             "count": 1
+                        },
+                        {
+                            "xml": "<service android:enabled=\"true\" android:exported=\"true\" android:isolatedProcess=\"false\" android:label=\"iBeacon\" android:name=\"com.radiusnetworks.ibeacon.service.IBeaconService\"></service>",
+                            "count": 1
+                        },
+                        {
+                            "xml": "<service android:enabled=\"true\" android:name=\"com.radiusnetworks.ibeacon.IBeaconIntentProcessor\"><meta-data android:name=\"background\" android:value=\"true\" /><intent-filter android:priority=\"1\"><action android:name=\"com.unarin.cordova.beacon.IBeaconPlugin.DID_RANGING\" /><action android:name=\"com.unarin.cordova.beacon.IBeaconPlugin.DID_MONITORING\" /></intent-filter></service>",
+                            "count": 1
                         }
                     ]
                 }
@@ -81,22 +81,21 @@
         "org.apache.cordova.inappbrowser": {
             "PACKAGE_NAME": "ru.smartplaces.mobileapp"
         },
-        "com.unarin.cordova.beacon": {
+        "org.apache.cordova.dialogs": {
+            "PACKAGE_NAME": "ru.smartplaces.mobileapp"
+        },
+        "org.apache.cordova.device": {
             "PACKAGE_NAME": "ru.smartplaces.mobileapp"
         },
         "de.appplant.cordova.plugin.local-notification": {
             "PACKAGE_NAME": "ru.smartplaces.mobileapp"
         },
-        "com.randdusing.bluetoothle": {
+        "com.unarin.cordova.beacon": {
             "PACKAGE_NAME": "ru.smartplaces.mobileapp"
         },
-        "org.apache.cordova.dialogs": {
+        "com.randdusing.bluetoothle": {
             "PACKAGE_NAME": "ru.smartplaces.mobileapp"
         }
     },
-    "dependent_plugins": {
-        "org.apache.cordova.device": {
-            "PACKAGE_NAME": "ru.smartplaces.mobileapp"
-        }
-    }
+    "dependent_plugins": {}
 }

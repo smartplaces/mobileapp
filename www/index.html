@@ -149,8 +149,8 @@
           <div data-page="index-4" class="page">
             <div class="page-content">
               <!-- Slider -->
-              <div class="slider-container places-history" style="height: 200px; background-color: white;">
-                <div class="slider-wrapper">
+              <div id="history-slider-container" class="slider-container places-history" style="height: 200px; background-color: white;">
+                <div id="history-slider" class="slider-wrapper">
                   <div class="slider-slide"><span style="text-align: center; display: block; margin: 10px; font-size: 21px;">Мясной ресторан &laquo;Скотина&raquo;</span></div>
                   <div class="slider-slide"><span style="text-align: center; display: block; margin: 10px; font-size: 21px;">Место 2</span></div>
                   <div class="slider-slide"><span style="text-align: center; display: block; margin: 10px; font-size: 21px;">Место 3</span></div>
@@ -160,7 +160,7 @@
               </div>
               <!-- Tabs wrapper, shoud have "tabs" class. Required element -->
               <div style="height: calc(100% - 200px); overflow: auto; -webkit-overflow-scrolling: touch;">
-                <div class="tabs">
+                <div id="history-tabs" class="tabs">
                   <div class="tab active" id="place0">
                     <div class="content-block-title">История событий</div>
                     <div class="list-block media-list">
@@ -267,7 +267,7 @@
           <a href="#view-1" class="tab-link active"><i class="icon tabbar-location-icon"><span id="view-1-badge" class="badge bg-red" style="display: none;"></span></i><span class="tabbar-label">Место</span></a>
           <a href="#view-2" class="tab-link"><i class="icon tabbar-map-icon"></i><span class="tabbar-label">Карта</span></a>
           <a href="#view-3" class="tab-link"><i class="icon tabbar-favourite-icon"></i><span class="tabbar-label">Избранное</span></a>
-          <a href="#view-4" class="tab-link"><i class="icon tabbar-history-icon"><span class="badge bg-red">4</span></i><span class="tabbar-label">История</span></a>
+          <a href="#view-4" class="tab-link"><i class="icon tabbar-history-icon"></i><span class="tabbar-label">История</span></a>
         </div>
       </div>
     </div>
@@ -317,6 +317,32 @@
           <p><%= text %></p>
         </div>
       </div>
+    </script>
+    <script id="historySliderTemplate" type="text/x-underscore-template">
+      <div class="slider-slide"><span style="text-align: center; display: block; margin: 10px; font-size: 21px;"><%= location.title %></span></div>
+    </script>
+    <script id="historyTabTemplate" type="text/x-underscore-template">
+      <div class="tab" data-place-id="<%= location._id %>">
+        <div class="content-block-title">История сообщений</div>
+        <div class="list-block media-list">
+          <ul>
+          </ul>
+        </div>
+      </div>
+    </script>
+    <script id="historyItemTemplate" type="text/x-underscore-template">
+      <li>
+        <a href="#" class="item-link item-content">
+          <div class="item-media"><img src="<%= image.url %>" width="80"></div>
+          <div class="item-inner">
+            <div class="item-title-row">
+              <div class="item-title"><%= header %></div>
+            </div>
+            <div class="item-subtitle"><%= moment(ts).format('llll') %></div>
+            <div class="item-text"><%= text %></div>
+          </div>
+        </a>
+      </li>
     </script>
   </body>
 </html>
