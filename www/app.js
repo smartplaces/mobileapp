@@ -23,8 +23,16 @@ var app = (function(){
 
   app.initialize = function(){
     document.addEventListener('deviceready', onDeviceReady, false);
-    document.addEventListener('pause',function(){ FOREGROUND=false; },false);
-    document.addEventListener('resume',function(){ FOREGROUND=true;},false);
+    document.addEventListener('pause',pause,false);
+    document.addEventListener('resume',resume,false);
+  };
+
+  function pause(){
+    FOREGROUND=false;
+  };
+
+  function resume(){
+    FOREGROUND=true;
   };
 
   function onDeviceReady(){
@@ -37,6 +45,26 @@ var app = (function(){
       myApp.showTab('#view-1');
       scrollToMessage(id);
     };
+
+    bluetoothle.initialize(
+      function(m){console.log(m)},
+      function(m){
+        console.log(m);
+        if (m.error==="enable") {
+          navigator.notification.confirm(
+            'Для работы приложения SmartPlaces необходимо включить Bluetooth.',
+            function(buttonIndex){
+              if (buttonIndex===1){
+                bluetoothle.enable(function(m){console.log(m)},function(m){console.log(m)});
+              }
+            },
+            'Bluetooth выключен',
+            ['Включить','Нет']
+          );
+        }
+      },
+      {request:true, statusReceiver:true}
+    );
 
     if (window.locationManager.isRangingAvailable()){
       // Start tracking beacons!

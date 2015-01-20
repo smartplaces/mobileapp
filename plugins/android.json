@@ -23,6 +23,14 @@
                         {
                             "xml": "<feature name=\"LocalNotification\"><param name=\"android-package\" value=\"de.appplant.cordova.plugin.localnotification.LocalNotification\" /></feature>",
                             "count": 1
+                        },
+                        {
+                            "xml": "<feature name=\"BluetoothLePlugin\"><param name=\"android-package\" value=\"com.randdusing.bluetoothle.BluetoothLePlugin\" /></feature>",
+                            "count": 1
+                        },
+                        {
+                            "xml": "<feature name=\"Notification\"><param name=\"android-package\" value=\"org.apache.cordova.dialogs.Notification\" /></feature>",
+                            "count": 1
                         }
                     ]
                 }
@@ -32,11 +40,11 @@
                     "/manifest": [
                         {
                             "xml": "<uses-permission android:name=\"android.permission.BLUETOOTH\" />",
-                            "count": 1
+                            "count": 2
                         },
                         {
                             "xml": "<uses-permission android:name=\"android.permission.BLUETOOTH_ADMIN\" />",
-                            "count": 1
+                            "count": 2
                         },
                         {
                             "xml": "<uses-permission android:name=\"android.permission.RECEIVE_BOOT_COMPLETED\" />",
@@ -77,6 +85,12 @@
             "PACKAGE_NAME": "ru.smartplaces.mobileapp"
         },
         "de.appplant.cordova.plugin.local-notification": {
+            "PACKAGE_NAME": "ru.smartplaces.mobileapp"
+        },
+        "com.randdusing.bluetoothle": {
+            "PACKAGE_NAME": "ru.smartplaces.mobileapp"
+        },
+        "org.apache.cordova.dialogs": {
             "PACKAGE_NAME": "ru.smartplaces.mobileapp"
         }
     },
