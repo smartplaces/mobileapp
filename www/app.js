@@ -2,11 +2,13 @@ var app = (function(){
   // Application object.
   var app = {};
 
-  var MSG_ID_COUNTER = 1;
+  var messagesId = {};
+
+  var idCounter = 0;
 
   var UUID = 'E2C56DB5-DFFB-48D2-B060-D0F5A71096E0';
 
-  var FOREGROUND = true;
+  var isInForeground = true;
 
   var historyStorage = 'historyStorage';
   var unreadHistoryStorage = 'unreadHistoryStorage';
@@ -30,11 +32,11 @@ var app = (function(){
   };
 
   function pause(){
-    FOREGROUND=false;
+    isInForeground=false;
   };
 
   function resume(){
-    FOREGROUND=true;
+    isInForeground=true;
   };
 
   function onDeviceReady(){
@@ -49,9 +51,13 @@ var app = (function(){
     };
 
     bluetoothle.initialize(
-      function(m){console.log(m)},
       function(m){
         console.log(m);
+        //TODO Hide "Bluetooth is OFF" notification
+      },
+      function(m){
+        console.log(m);
+        //TODO Show "Bluetooth is OFF" notification
         if (m.error==="enable") {
           navigator.notification.confirm(
             'Для работы приложения SmartPlaces необходимо включить Bluetooth.',
@@ -73,7 +79,7 @@ var app = (function(){
       startScan();
 
       // Show saved message history
-      showMessageHistory();
+      showMessageList();
 
       // And clear unread message history at start
       localStorage.removeItem(unreadHistoryStorage);
@@ -225,12 +231,12 @@ var app = (function(){
             places[place] = count + 1;
             localStorage[UUID]=JSON.stringify(places);
             // new
-            console.log(data);
             addMessageToHistory(data, historyStorage);
-            showMessageHistory();
+            showMessageList();
             showLocalNotification(data);
             // unread messages support
-            if (! $('#view-1').hasClass('active')) {
+            if (! $('#view-1').hasClass('active') && isInForeground) {
+              // Приложение активно, но раздел "Место" сейчас не активен
               addMessageToHistory(data, unreadHistoryStorage);
               showUnreadMessageCount();
             }
@@ -269,45 +275,34 @@ var app = (function(){
     };
   };
 
-  function showMessageHistory() {
+  function showMessageList() {
     var messageHistory = localStorage[historyStorage] ? JSON.parse(localStorage[historyStorage]) : [];
-    if (! _.isEmpty(messageHistory)) {
-
-      $('#message').empty();
-      $('#history-slider').empty();
-      $('#history-tabs').empty();
-
-      var messageTemplate = _.template($('#messageTemplate').html());
-      var historySliderTemplate = _.template($('#historySliderTemplate').html());
-      var historyTabTemplate = _.template($('#historyTabTemplate').html());
-      var historyItemTemplate = _.template($('#historyItemTemplate').html());
-
-      _.each(messageHistory, function (element, index, list) {
-        if (element.messagetype == '10') {
-          $('#message').append(messageTemplate(element));
-
-          if (! $('#history-tabs .tab[data-place-id="' + element.location._id + '"]').length) {
-            $('#history-slider').append(historySliderTemplate(element));
-            $('#history-tabs').append(historyTabTemplate(element));
-            $('#history-tabs .tab[data-place-id="' + element.location._id + '"]').attr('id', 'place' + $('#history-slider').children().length );
-          };
-          $('#history-tabs .tab[data-place-id="' + element.location._id + '"] ul').append(historyItemTemplate(element));
-
-        };
-      });
-
-      historySlider.update();
-      historySlider.slideTo(0);
-      myApp.showTab('#place1');
-
-    };
-  };
-
-  /* предыдущая реализация, временно сохраняю
-  function showMessage(m) {
+    var messageHTML = '';
     var messageTemplate = _.template($('#messageTemplate').html());
+    _.each(messageHistory, function (element, index, list) {
+      if (element.messagetype == '10') {
+        messageHTML += messageTemplate(element);
+      };
+    });
+    if (messageHTML != '')
+      $('#message').html(messageHTML);
+  }
+
+  function showMessage(m){
+    // Compiled message template
+    var messageTemplate = _.template($('#messageTemplate').html());
+
+    //console.log('------------- SHOW MESSAGE -------------');
     if (m.messagetype=='10'){
+      /*
+      $('#message').html(
+        '<div style="width: 100%; height: 50%; background-image: url('+m.image.url+'); background-size: cover; background-position: center; background-repeat: no-repeat;"></div>'
+        + '<div class="content-block-title">'+m.header+'</div>'
+        + '<div class="content-block">'+m.text+'<br/>'+m.ts+'</div>'
+      );
+      */
       $('#message').html(messageTemplate(m));
+
     }else if (m.messagetype=='20'){
       $('#message').html("<iframe width='100%'' height='100%' src='"+m.url+"' frameborder='0' allowfullscreen></iframe>");
     }else{
@@ -316,21 +311,25 @@ var app = (function(){
     if (m.coupon){
       $('#couponLink').html('<a href="#" class="link" onclick="window.open(\''+m.coupon+'\', \'_system\');"><span>Скачать купон</span></a>');
     }
-  };
-  */
+  }
 
   function showLocalNotification (message) {
-    if (!FOREGROUND){
-      MSG_ID_COUNTER+=1;
+    if (!isInForeground){
+      var id = messagesId[message._id]
+      if (!id) {
+        idCounter+=1;
+        id = idCounter;
+        messagesId[message._id] = idCounter;
+      }
       window.plugin.notification.local.add({
-        id: MSG_ID_COUNTER,
+        id: id,
         title:   message.header,
         message: message.text,
         json: message._id,
         autoCancel: true
       });
     }else{
-      //TODO: Do somethig else when app in foreground
+      //TODO: Do somethig else when app in isInForeground
     }
   };
 
