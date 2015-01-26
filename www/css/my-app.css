@@ -61,3 +61,11 @@ i.tabbar-favourite-icon {
 .content-block-title {
   text-transform: none;
 }
+
+.red-background {
+  background-color: red;
+}
+
+.maroon-background {
+  background-color: maroon;
+}

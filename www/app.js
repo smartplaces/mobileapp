@@ -13,6 +13,9 @@ var app = (function(){
   var historyStorage = 'historyStorage';
   var unreadHistoryStorage = 'unreadHistoryStorage';
 
+  // BLE Warning Notification
+  var BLEWarningNotification = undefined;
+
   // Specify your beacon UUIDs here.
   var regions =
   [
@@ -53,11 +56,11 @@ var app = (function(){
     bluetoothle.initialize(
       function(m){
         console.log(m);
-        //TODO Hide "Bluetooth is OFF" notification
+        hideBLEWarning();
       },
       function(m){
         console.log(m);
-        //TODO Show "Bluetooth is OFF" notification
+        showBLEWarning();
         if (m.error==="enable") {
           navigator.notification.confirm(
             'Для работы приложения SmartPlaces необходимо включить Bluetooth.',
@@ -337,6 +340,30 @@ var app = (function(){
     var messagePosition = $('#message div[data-message-id="' + messageId + '"]').position();
     if (! _.isEmpty(messagePosition)) {
       $('#message').scrollTop(messagePosition.top - $('#view-1-navbar').height());
+    };
+  };
+
+  function showBLEWarning() {
+    if (! _.isEmpty(BLEWarningNotification)) {
+      // Nothing to do
+      return;
+    };
+    BLEWarningNotification = myApp.addNotification({
+      title: 'Bluetooth выключен',
+      message: 'Для работы приложения необходимо включить bluetooth.',
+      media: '<img width="44" height="44" style="border-radius:100%" src="img/bluetooth-icon-vector.png">',
+      closeIcon: false,
+      additionalClass: 'maroon-background',
+      onClick: function () {
+        // TODO: Здесь можно повторно попытаться включить блутус, если ранее пользователь отказался
+      }
+    });
+  };
+
+  function hideBLEWarning() {
+    if (! _.isEmpty(BLEWarningNotification)) {
+      myApp.closeNotification(BLEWarningNotification);
+      BLEWarningNotification = undefined;
     };
   };
 
