@@ -234,6 +234,8 @@ var app = (function(){
             places[place] = count + 1;
             localStorage[UUID]=JSON.stringify(places);
             // new
+            console.log(data);
+            console.log(data.location);
             addMessageToHistory(data, historyStorage);
             showMessageHistory();
             showLocalNotification(data);

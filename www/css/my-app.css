@@ -55,18 +55,41 @@ i.tabbar-tag-icon {
   background-image: url("data:image/svg+xml;charset=utf-8,<svg width='22px' height='22px' viewBox='0 0 22 22' version='1.1' xmlns='http://www.w3.org/2000/svg' xmlns:xlink='http://www.w3.org/1999/xlink' xmlns:sketch='http://www.bohemiancoding.com/sketch/ns'><defs><path d='M8.60957372,-1.86808672 L1.48149987,4.29864327 L1.48149987,19.5668775 C1.48149987,19.8368658 1.70518247,20.0557345 1.98057672,20.0557345 L15.982423,20.0557345 C16.2580556,20.0557345 16.4814999,19.8329873 16.4814999,19.5668775 L16.4814999,4.29864327 L9.35342607,-1.86808672 C9.14801692,-2.0457929 8.81076027,-2.04213981 8.60957372,-1.86808672 Z M8.98149987,7.83351232 C10.0860694,7.83351232 10.9814999,6.95798032 10.9814999,5.87795676 C10.9814999,4.79793321 10.0860694,3.92240121 8.98149987,3.92240121 C7.87693032,3.92240121 6.98149987,4.79793321 6.98149987,5.87795676 C6.98149987,6.95798032 7.87693032,7.83351232 8.98149987,7.83351232 L8.98149987,7.83351232 Z' id='path-1'></path></defs><g id='miu' stroke='none' stroke-width='1' fill='none' fill-rule='evenodd' sketch:type='MSPage'><g id='common_tag_general_price_glyph'><use fill='#007aff' fill-rule='evenodd' sketch:type='MSShapeGroup' transform='translate(8.981500, 9.000000) rotate(-45.000000) translate(-8.981500, -9.000000) ' xlink:href='#path-1'></use><use fill='none' xlink:href='#path-1'></use></g></g></svg>");
 }
 
+i.tabbar-place-icon {
+  width: 15px;
+  height: 30px;
+  background-image: url("data:image/svg+xml;charset=utf-8,<svg xmlns='http://www.w3.org/2000/svg' x='0px' y='0px' viewBox='0 0 15 22' version='1.1' xmlns:xlink='http://www.w3.org/1999/xlink' xmlns:sketch='http://www.bohemiancoding.com/sketch/ns'><defs><path d='M15,7.8128179 C15,3.49791751 12.5187988,-1.09762448e-06 7.5,0 C2.48120115,1.09762447e-06 0,3.49791751 0,7.8128179 C0,12.1277183 7.5,22 7.5,22 C7.5,22 15,12.1277183 15,7.8128179 Z M14,7.8654274 C14,4.04085657 11.6286621,0.94043062 7.5,0.94042969 C3.37133789,0.94042875 1,4.04085657 1,7.8654274 C1,11.6899982 7.5,20.4404297 7.5,20.4404297 C7.5,20.4404297 14,11.6899982 14,7.8654274 Z M7.5,10.5 C9.7091391,10.5 11.5,8.7091391 11.5,6.5 C11.5,4.29086089 9.7091391,2.5 7.5,2.5 C5.2908609,2.5 3.5,4.29086089 3.5,6.5 C3.5,8.7091391 5.2908609,10.5 7.5,10.5 L7.5,10.5 Z' id='path-1'></path></defs><g id='miu' stroke='none' stroke-width='1' fill='none' fill-rule='evenodd' sketch:type='MSPage'><g id='map_location_pin_map-marker_outline_stroke'><use fill='#929292' fill-rule='evenodd' sketch:type='MSShapeGroup' xlink:href='#path-1'></use><use fill='none' xlink:href='#path-1'></use></g></g></svg>");
+}
+
 i.tabbar-attachment-icon {
   width: 9px;
   height: 22px;
   background-image: url("data:image/svg+xml;charset=utf-8,<svg width='9px' height='22px' viewBox='0 0 9 22' version='1.1' xmlns='http://www.w3.org/2000/svg' xmlns:xlink='http://www.w3.org/1999/xlink' xmlns:sketch='http://www.bohemiancoding.com/sketch/ns'><defs><path id='path-1' d='M0,3.52 L0,16.94 C0,16.94 1.0348078e-10,22.0000019 4.5,22 C9,21.9999981 9,16.94 9,16.94 L9,3.52 C9,2.97 8,2.97 8,3.52 L8,16.9400005 C8,16.9400005 8.36363636,21 4.5,21 C1,21 1,16.9400005 1,16.9400005 L1,3.52 C1,3.52 1,1.00000091 3.5,1 C6,0.999999106 6,3.52 6,3.52 L6,16.9400005 C6,16.9400005 6,18.5175552 4.54081631,18.5175537 C3.08163261,18.5175523 3,16.9400005 3,16.9400005 L3,4.18 C3,3.63 2,3.63 2,4.18 L2,16.94 C2,16.94 1.81354358,19.6175563 4.54081631,19.6175537 C7,19.6175518 7,16.94 7,16.94 L7,3.51999998 C7,3.51999998 7,-1.28024078e-06 3.5,0 C-3.02535774e-15,1.28024079e-06 0,3.52 0,3.52 Z'></path></defs><g id='miu' stroke='none' stroke-width='1' fill='none' fill-rule='evenodd' sketch:type='MSPage'><g id='editor_attachment_paper_clip'><use fill='#929292' fill-rule='evenodd' sketch:type='MSShapeGroup' xlink:href='#path-1'></use><use fill='none' xlink:href='#path-1'></use></g></g></svg>");
 }
 
+i.tabbar-ticket-icon {
+  width: 30px;
+  height: 30px;
+  background-image: url("data:image/svg+xml;charset=utf-8,<svg version='1.1' id='Capa_1' xmlns='http://www.w3.org/2000/svg' xmlns:xlink='http://www.w3.org/1999/xlink' x='0px' y='0px' viewBox='0 1 612 790' style='enable-background:new 0 1 612 790;' xml:space='preserve'><g fill='#929292'><polygon points='255.013,471.372 306.022,442.573 357.058,471.319 345.431,413.906 388.55,374.25 330.349,367.564 305.96,314.305 281.615,367.59 223.424,374.33 266.578,413.942'/><polygon points='418.624,448.099 452.462,428.988 486.318,448.063 478.605,409.975 507.209,383.673 468.606,379.236 452.418,343.901 436.274,379.254 397.671,383.717 426.293,410.001'/><polygon points='125.744,448.099 159.582,428.988 193.438,448.063 185.725,409.975 214.329,383.673 175.726,379.236 159.538,343.901 143.394,379.254 104.791,383.717 133.422,410.001'/><path d='M612,351.579V244.734H0v106.846c24.531,0,44.421,19.881,44.421,44.421S24.531,440.421,0,440.421v106.846h612V440.421c-24.531,0-44.421-19.89-44.421-44.421C567.579,371.469,587.469,351.579,612,351.579z M530.42,496.478H81.58V295.522h448.84V496.478L530.42,496.478z'/></g></svg>")
+}
+
 .message-image {
-  width: 100%;
   height: 50%;
+  min-height: 200px;
   background-size: cover;
   background-position: center;
   background-repeat: no-repeat;
+}
+
+.content-block-line-icon {
+  display: inline-block;
+  vertical-align: middle;
+  background-size: contain;
+  background-position: center;
+  background-repeat: no-repeat;
+  position: relative;
+  width: 20px !important;
+  height: 20px !important;
 }
 
 .message-image+.content-block {
@@ -74,7 +97,35 @@ i.tabbar-attachment-icon {
 }
 
 .content-block-title {
+/*  background-color: #FFFFFF; */
+  background-color: rgba(255, 255, 255, 0.9);
+}
+
+.content-block-line {
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  line-height: 1;
+  font-size: 14px;
   text-transform: none;
+  margin: 0px;
+  padding: 10px;
+  border: none;
+  color: #666666 !important;
+}
+
+.content-block-multiline {
+  overflow: auto;
+  white-space: normal;
+  text-overflow: clip;
+}
+
+.content-block-line h1, .content-block-line h2, .content-block-line h3, .content-block-line h4, .content-block-line p {
+  margin: 0px;
+}
+
+.content-block {
+  margin: 0px;
 }
 
 .red-background {
@@ -83,4 +134,61 @@ i.tabbar-attachment-icon {
 
 .maroon-background {
   background-color: maroon;
+}
+
+/* Стили для "плавающих" заголовков */
+#message-fake-content-block-title {
+  position: absolute;
+  top: 44px;
+  left: 0px;
+  right: 0px;
+  z-index: 2000;
+}
+
+.content-block-wrapper {
+  position: relative;
+  padding-bottom: 10px;
+}
+
+.content-block-wrapper+.content-block-wrapper {
+  border-top: 1px solid #DDDDDD;
+}
+
+/* 1. весь блок под "верхней линией" (обычно это начальное состояние) */
+.content-block-wrapper .content-block-title {
+  position: relative;
+}
+
+.content-block-wrapper .content-block-title-filler {
+  display: none;
+}
+
+/* 2. блок пересечен "верхней линией", но достаточно места для для заголовка */
+/* -- position: fixed работает очень медленно, заменил на клонирование в #message-fake-content-block-title */
+.content-block-wrapper.float-title .content-block-title {
+/*
+  position: fixed;
+  left: 0px;
+  right: 0px;
+  top: 44px;
+  z-index: 1500;
+*/
+  display: none;
+}
+
+.content-block-wrapper.float-title .content-block-title-filler {
+  display: block;
+}
+
+/* 3. заголовок не помещается под "верхней линией" */
+.content-block-wrapper.hidden-title .content-block-title {
+  position: absolute;
+  left: 0px;
+  right: 0px;
+  bottom: 0px;
+  z-index: 1000;
+}
+
+.content-block-wrapper.hidden-title .content-block-title-filler {
+  display: block;
 }

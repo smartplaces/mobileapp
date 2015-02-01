@@ -7,7 +7,8 @@
     <meta name="apple-mobile-web-app-status-bar-style" content="black">
     <title>My App</title>
     <!-- Path to Framework7 Library CSS-->
-    <link rel="stylesheet" href="css/framework7.min.css">
+    <link rel="stylesheet" href="css/framework7.css">
+    <link rel="stylesheet" href="css/framework7.themes.css">
     <!-- Path to your custom app styles-->
     <link rel="stylesheet" href="css/my-app.css">
     <!-- Scripts -->
@@ -17,7 +18,7 @@
     <script src="js/moment-with-locales.min.js"></script>
     <script src="app.js"></script>
   </head>
-  <body>
+  <body class="layout-white">
     <!-- Status bar overlay for fullscreen mode-->
     <div class="statusbar-overlay"></div>
     <!-- Panels overlay-->
@@ -49,13 +50,17 @@
         </div>
         <!-- /End of Top Navbar-->
 
+        <div id="message-fake-content-block-title"></div>
+
         <!-- Pages-->
         <div class="pages navbar-through">
           <!-- Page, data-page contains page name-->
           <div data-page="index-1" class="page">
             <!-- Scrollable page content-->
-            <div class="page-content" id="message">
-              <p>нет сообщений</p>
+            <div class="page-content inactive" id="message">
+
+              <!-- No messages yet -->
+
             </div>
           </div>
         </div>
@@ -308,17 +313,24 @@
 
       };
     </script>
-    <script id="messageTemplate" type="text/x-underscore-template">
-      <div class="content-block-title" data-message-id="<%= _id %>"><%= moment(ts).fromNow() %></div>
-      <div class="message-image" style="background-image: url('<%= image.url %>');"></div>
-      <div class="content-block">
-        <div class="content-block-inner">
-          <h4><%= header %></h4>
-          <p><%= text %></p>
+    <script id="messageTemplate" type="text/template">
+      <div id="wrapper1" class="content-block-wrapper">
+        <div class="content-block-line content-block-title" data-message-id="<%= _id %>">
+          <div class="row no-gutter">
+            <div class="col-66"><i class="content-block-line-icon tabbar-place-icon"></i> <%= location.title %></div>
+            <div class="col-33"><%= moment(ts).fromNow() %></div>
+          </div>
         </div>
+        <div class="content-block-title-filler"></div>
+        <% if (typeof coupon !== "undefined") { %>
+        <div class="content-block-line"><a href="#" class="link" onclick="window.open('<%= coupon %>', '_system')"><i class="content-block-line-icon tabbar-attachment-icon"></i> Скачать купон</a></div>
+        <% } %>
+        <div class="message-image" style="background-image: url('<%= image.url %>');"></div>
+        <div class="content-block-line content-block-multiline"><h4><%= header %></h4></div>
+        <div class="content-block-line content-block-multiline"><p><%= text %></p></div>
       </div>
     </script>
-    <script id="historySliderTemplate" type="text/x-underscore-template">
+    <script id="historySliderTemplate" type="text/template">
       <div class="slider-slide"><span style="text-align: center; display: block; margin: 10px; font-size: 21px;"><%= location.title %></span></div>
     </script>
     <script id="historyTabTemplate" type="text/x-underscore-template">
@@ -330,7 +342,7 @@
         </div>
       </div>
     </script>
-    <script id="historyItemTemplate" type="text/x-underscore-template">
+    <script id="historyItemTemplate" type="text/template">
       <li>
         <a href="#" class="item-link item-content">
           <div class="item-media"><img src="<%= image.url %>" width="80"></div>
