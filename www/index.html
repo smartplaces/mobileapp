@@ -317,8 +317,8 @@
       <div id="wrapper1" class="content-block-wrapper">
         <div class="content-block-line content-block-title" data-message-id="<%= _id %>">
           <div class="row no-gutter">
-            <div class="col-66"><i class="content-block-line-icon tabbar-place-icon"></i> <%= location.title %></div>
-            <div class="col-33"><%= moment(ts).fromNow() %></div>
+            <div class="col-66 cut-line"><i class="content-block-line-icon tabbar-place-icon"></i> <%= location.title %></div>
+            <div class="col-33 cut-line"><%= moment(ts).fromNow() %></div>
           </div>
         </div>
         <div class="content-block-title-filler"></div>
@@ -328,6 +328,7 @@
         <div class="message-image" style="background-image: url('<%= image.url %>');"></div>
         <div class="content-block-line content-block-multiline"><h4><%= header %></h4></div>
         <div class="content-block-line content-block-multiline"><p><%= text %></p></div>
+        <div class="content-block-line text-right"><i class="content-block-line-icon tabbar-fav-icon wide-icon"></i>&nbsp;&nbsp;<i class="content-block-line-icon tabbar-share-icon wide-icon"></i></div>
       </div>
     </script>
     <script id="historySliderTemplate" type="text/template">
