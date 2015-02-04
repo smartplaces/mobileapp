@@ -84,6 +84,9 @@ var app = (function(){
       // Show saved message history
       showMessageHistory();
 
+      // Show fav messages
+      showFavMessages();
+
       // And clear unread message history at start
       localStorage.removeItem(unreadHistoryStorage);
 
@@ -92,6 +95,15 @@ var app = (function(){
             $('#message').scrollTop(0);
           localStorage.removeItem(unreadHistoryStorage);
           showUnreadMessageCount();
+      });
+
+      $('.content-block-line-icon.tabbar-fav-icon').on('click', function() {
+        if (switchFavMessage($(this).data('messageId'))) {
+          $(this).addClass('turn-on');
+        } else {
+          $(this).removeClass('turn-on');
+        };
+        showFavMessages();
       });
 
       // Display refresh timer.
@@ -251,6 +263,32 @@ var app = (function(){
 
   }
 
+  function switchFavMessage(messageId) {
+    var messageHistory = localStorage[historyStorage] ? JSON.parse(localStorage[historyStorage]) : [];
+    var curMessageIndex = -1;
+    var favStatus = false;
+    messageHistory.every(function (element, index, array) {
+      if (element._id == messageId) {
+        curMessageIndex = index;
+        return false;
+      } else {
+        return true;
+      };
+    });
+    if (curMessageIndex >= 0) {
+      if (typeof messageHistory[curMessageIndex].fav !== "undefined") {
+        // if fav status defined, switch it
+        favStatus = ! messageHistory[curMessageIndex].fav;
+      } else {
+        // if fav status undefined, turn it on
+        favStatus = true;
+      };
+      messageHistory[curMessageIndex].fav = favStatus;
+      localStorage[historyStorage] = JSON.stringify(messageHistory);
+    };
+    return favStatus;
+  };
+
   function addMessageToHistory(message, storage) {
     var messageHistory = localStorage[storage] ? JSON.parse(localStorage[storage]) : [];
     var curMessageIndex = -1;
@@ -265,6 +303,9 @@ var app = (function(){
     if (curMessageIndex < 0) {
       messageHistory.push(message);
     } else {
+      // copy saved fav status to updated message first
+      message.fav = messageHistory[curMessageIndex].fav
+      // then update message
       messageHistory[curMessageIndex] = message;
     };
     messageHistory = _.sortBy(messageHistory, function(element) { return -element.ts; });
@@ -277,6 +318,21 @@ var app = (function(){
       $('#view-1-badge').html(messageHistory.length).show();
     } else {
       $('#view-1-badge').empty().hide();
+    };
+  };
+
+  function showFavMessages() {
+    var messageHistory = localStorage[historyStorage] ? JSON.parse(localStorage[historyStorage]) : [];
+    if (! _.isEmpty(messageHistory)) {
+      $('#favourite-messages-list').empty();
+      var historyItemTemplate = _.template($('#historyItemTemplate').html());
+      _.each(messageHistory, function (element, index, list) {
+        if (typeof element.fav !== "undefined" && element.fav) {
+          if (element.messagetype == '10') {
+            $('#favourite-messages-list').append(historyItemTemplate(element));
+          };
+        };
+      });
     };
   };
 
@@ -330,7 +386,7 @@ var app = (function(){
   };
   */
 
-  function showLocalNotification (message) {
+  function showLocalNotification(message) {
     if (!isInForeground){
       var id = messagesId[message._id]
       if (!id) {
@@ -351,7 +407,7 @@ var app = (function(){
   };
 
   function scrollToMessage(messageId) {
-    var messagePosition = $('#message div[data-message-id="' + messageId + '"]').position();
+    var messagePosition = $('#message div.content-block-title[data-message-id="' + messageId + '"]').position();
     if (! _.isEmpty(messagePosition)) {
       $('#message').scrollTop(messagePosition.top - $('#view-1-navbar').height());
     };
